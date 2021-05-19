@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wallpaper</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="wallpaper_static">Static Wallpaper</string>
+    <string name="wallpaper_dynamic">Dynamic Wallpaper</string>
+</resources>
