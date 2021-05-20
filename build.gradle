@@ -1,14 +1,17 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext.objectboxVersion = '2.9.1'
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
     }
 }
 
@@ -17,9 +20,80 @@ allprojects {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+        maven { url 'https://jitpack.io' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Define versions in a single place
+ext {
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+
+    // androidxversion
+    androidxAppCompatVersion = '1.3.0'
+    androidMaterialVersion = '1.3.0'
+    androidConstraintlayoutVersion = '2.0.4'
+    androidxRecyclerViewVersion = '1.0.0'
+    androidxAnnotationVersion = '1.0.0'
+    androidxTestVersion = '1.2.0'
+
+    kotlin_version = '1.3.72'
+
+    // Play Service
+    playServiceVersion = '17.4.0'
+    playServiceAuthVersion = '18.0.0'
+    playServiceTagManagerVersion = '17.0.0'
+    playServiceAnalyticsVersion = '17.0.0'
+
+    // Firebase
+    firebaseCrashlyticsVersion = '17.4.1'
+    firebaseCoreVersion = '17.4.1'
+    firebaseAnalyticsVersion = '17.4.1'
+    firebaseAdsVersion = '19.5.0'
+    firebaseAdsMopubMediationVersion = "19.5.0.2"  // Mopub Mediation 19.4.0.0
+    firebaseMessagingVersion = '20.1.6'
+    firebasePerformanceVersion = '19.0.7'
+    firebaseConfigVersion = '18.0.0'
+
+    // Support
+    supportLibraryVersion = '28.0.0'
+
+    // Play Service for Inmobi
+    playServiceBase = '17.4.0'
+    playServiceAds = '19.5.0'
+    playServiceLocation = '17.1.0'
+    playServicePlus = '17.0.0'
+
+    // Facebook
+    facebookSdkVersion = '7.1.0'
+
+    // EasyTracker
+    easyTrackerVersion = '1.0.10'
+    easyTrackerFlurryVersion = '1.0.3'
+    easyTrackerUmengOverseaVersion = '1.0.8'
+    easyTrackerUmengChinaVersion = '1.0.7'
+
+    // Other app dependencies
+    googleApi = '1.22.0'
+    eventBusVersion = '3.1.1'
+    okHttpVersion = '3.9.0'
+    glideVersion = '4.9.0'
+    lottieVersion = '2.5.1'
+    rxJavaVersion = '2.1.16'
+    rxAndroidVersion = '2.0.2'
+    rxJavaProguardVersion = '1.2.9.0'
+    easyPermissionVersion = '2.0.1'
+    gsonVersion = '2.8.6'
+
+    // Th Libs dependencies
+    nanoHttpdVersion = '1.0.3'
+    thlogVersion = '2.0.7'
+    thlogCompilerVersion = '2.0.7'
+    featureReportVersion = '1.0.2'
 }

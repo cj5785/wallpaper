@@ -1,36 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pickni.wallpaper">
 
-    <uses-permission android:name = "android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:remove="android:maxSdkVersion" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.software.live_wallpaper" />
+    <uses-feature android:name="android.hardware.camera.any" /> <!-- 适配Android R包可见性 开始 -->
+    <queries package="${applicationId}">
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+        </intent>
+    </queries>
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Wallpaper">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.Wallpaper"
+        tools:targetApi="n">
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".AboutActivity" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
+        </activity> <!-- <service -->
+        <!-- android:name=".service.MyLwp" -->
+        <!-- android:enabled="true" -->
+        <!-- android:permission="android.permission.BIND_WALLPAPER"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.service.wallpaper.WallpaperService" /> -->
+        <!-- </intent-filter> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.service.wallpaper" -->
+        <!-- android:resource="@xml/livewallpapervideo" /> -->
+        <!-- </service> -->
+        <!-- 视频壁纸服务 -->
         <service
-            android:name=".service.MyLwp"
-            android:enabled="true"
+            android:name=".service.VideoWallpaperService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:process=":wallpaper">
 
-            android:permission="android.permission.BIND_WALLPAPER">
+            <!-- 配置intent-filter -->
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>
+            <!-- 配置meta-data -->
             <meta-data
                 android:name="android.service.wallpaper"
-                android:resource="@xml/livewallpapervideo" />
+                android:resource="@xml/live_wall_paper" />
+        </service> <!-- 重置壁纸服务 -->
+        <service
+            android:name=".service.ResetWallpaperService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:process=":wallpaper">
+
+            <!-- 配置intent-filter -->
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <!-- 配置meta-data -->
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/live_wall_paper" />
         </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.pickni.wallpaper.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

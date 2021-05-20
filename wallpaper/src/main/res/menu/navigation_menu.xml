@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_gallery"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:id="@+id/action_reset"
+        android:icon="@drawable/ic_vector_menu_reset"
         android:orderInCategory="100"
-        android:title="编辑" />
+        android:title="@string/reset" />
 
     <item
-        android:id="@+id/action_details"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_vector_menu_settings"
         android:orderInCategory="100"
-        android:title="详情" />
+        android:title="@string/settings" />
 
-    <item
-        android:id="@+id/action_movie"
-        android:icon="@android:drawable/ic_menu_more"
-        android:orderInCategory="100"
-        android:title="媒体库">
-        <menu>
-            <item
-                android:id="@+id/media_play"
-                android:icon="@android:drawable/ic_media_play"
-                android:title="播放" />
-
-            <item
-                android:id="@+id/media_pause"
-                android:icon="@android:drawable/ic_media_pause"
-                android:title="暂停" />
-        </menu>
-    </item>
     <item
         android:id="@+id/action_about"
-        android:icon="@android:drawable/ic_menu_help"
+        android:icon="@drawable/ic_vector_menu_about"
         android:orderInCategory="100"
-        android:title="关于" />
+        android:title="@string/about" />
 </menu>

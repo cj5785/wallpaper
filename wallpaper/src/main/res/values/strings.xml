@@ -4,4 +4,11 @@
     <string name="drawer_close">Close</string>
     <string name="wallpaper_static">Static Wallpaper</string>
     <string name="wallpaper_dynamic">Dynamic Wallpaper</string>
+    <string name="solid_color">Solid Color</string>
+    <string name="gradient_color">Gradient Color</string>
+    <string name="customize">Customize</string>
+    <string name="wallpaper_name">Wallpaper</string>
+    <string name="reset">Reset</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
 </resources>
