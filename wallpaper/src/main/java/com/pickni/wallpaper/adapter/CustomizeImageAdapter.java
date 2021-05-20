@@ -20,7 +20,7 @@ import java.util.List;
  * email       : chenjietop@gmail.com
  * description :
  */
-public class CustomizeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CustomizeImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "CustomizeAdapter";
     private static final int ITEM_TYPE_HEADER = 0;

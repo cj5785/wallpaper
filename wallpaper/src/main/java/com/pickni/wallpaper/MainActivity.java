@@ -9,17 +9,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -38,23 +35,25 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.pickni.wallpaper.common.Constants;
 import com.pickni.wallpaper.common.ObjectBox;
-import com.pickni.wallpaper.common.WallpaperData;
+import com.pickni.wallpaper.common.WallpaperImageData;
+import com.pickni.wallpaper.common.WallpaperVideoData;
+import com.pickni.wallpaper.event.DynamicWallpaperAddEvent;
 import com.pickni.wallpaper.event.StaticWallpaperAddEvent;
 import com.pickni.wallpaper.fragment.DefaultFragment;
 import com.pickni.wallpaper.fragment.WallpaperDynamicFragment;
 import com.pickni.wallpaper.fragment.WallpaperStaticFragment;
 import com.pickni.wallpaper.service.ResetWallpaperService;
+import com.pickni.wallpaper.service.VideoWallpaperService;
 import com.pickni.wallpaper.utils.BitmapUtils;
 import com.pickni.wallpaper.utils.WallpaperUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private static final int SET_WALLPAPER = 0x100;
@@ -120,27 +119,24 @@ public class MainActivity extends AppCompatActivity {
                 .apply(RequestOptions.circleCropTransform())
                 .into(avatarImage);
         emailText.setText(Constants.EMAIL_ADDRESS);
-        Menu menu = navigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem menuItem = menu.getItem(i);
-            menuItem.set
-        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
-            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_reset:
-                        Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
-                        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
+                        Intent intentWallpaper = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+                        intentWallpaper.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                                 new ComponentName(MainActivity.this, ResetWallpaperService.class));
-                        startActivity(intent);
+                        startActivity(intentWallpaper);
                         break;
                     case R.id.action_settings:
-                        Toast.makeText(MainActivity.this, "settings", Toast.LENGTH_SHORT).show();
+                        Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intentSettings);
                         break;
                     case R.id.action_about:
-                        Toast.makeText(MainActivity.this, "about", Toast.LENGTH_SHORT).show();
+                        Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intentAbout);
                         break;
                 }
                 return false;
@@ -207,11 +203,11 @@ public class MainActivity extends AppCompatActivity {
             switch (type) {
                 case STATIC:
                     WallpaperStaticFragment staticFragment = new WallpaperStaticFragment();
-                    staticFragment.setOnFragmentListener(mOnFragmentListener);
+                    staticFragment.setOnFragmentListener(mOnStaticFragmentListener);
                     return staticFragment;
                 case DYNAMIC:
                     WallpaperDynamicFragment dynamicFragment = new WallpaperDynamicFragment();
-//                    dynamicFragment.setOn;
+                    dynamicFragment.setOnFragmentListener(mOnDynamicFragmentListener);
                     return dynamicFragment;
                 default:
                     return new DefaultFragment();
@@ -224,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private final WallpaperStaticFragment.OnFragmentListener mOnFragmentListener
+    private final WallpaperStaticFragment.OnFragmentListener mOnStaticFragmentListener
             = new WallpaperStaticFragment.OnFragmentListener() {
         @Override
         public void onColorSelect(Drawable drawable) {
@@ -262,9 +258,9 @@ public class MainActivity extends AppCompatActivity {
                             if (!file.exists()) {
                                 return;
                             }
-                            WallpaperData data = new WallpaperData();
+                            WallpaperImageData data = new WallpaperImageData();
                             data.path = file.getAbsolutePath();
-                            ObjectBox.get().boxFor(WallpaperData.class).put(data);
+                            ObjectBox.get().boxFor(WallpaperImageData.class).put(data);
                             WallpaperUtils.setWallpaper(MainActivity.this, localMedia.getCutPath());
                             EventBus.getDefault().post(new StaticWallpaperAddEvent());
                         }
@@ -280,6 +276,51 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onImagePathSelect(String imagePath) {
             WallpaperUtils.setWallpaper(MainActivity.this, imagePath);
+        }
+    };
+
+    private final WallpaperDynamicFragment.OnFragmentListener mOnDynamicFragmentListener
+            = new WallpaperDynamicFragment.OnFragmentListener() {
+        @Override
+        public void onHeaderSelect() {
+            PictureSelector.create(MainActivity.this)
+                    .openGallery(PictureMimeType.ofVideo())
+                    .theme(R.style.picture_WeChat_style)
+                    .selectionMode(PictureConfig.SINGLE)
+                    .imageEngine(GlideEngine.createGlideEngine())
+                    .forResult(new OnResultCallbackListener<LocalMedia>() {
+                        @Override
+                        public void onResult(List<LocalMedia> result) {
+                            if (result == null || result.size() == 0) {
+                                return;
+                            }
+                            LocalMedia localMedia = result.get(0);
+                            if (localMedia == null) {
+                                return;
+                            }
+                            File file = new File(localMedia.getRealPath());
+                            if (!file.exists()) {
+                                return;
+                            }
+                            WallpaperVideoData data = new WallpaperVideoData();
+                            data.path = file.getAbsolutePath();
+                            ObjectBox.get().boxFor(WallpaperVideoData.class).put(data);
+                            VideoWallpaperService.setWallPaper(MainActivity.this, file.getAbsolutePath());
+                            EventBus.getDefault().post(new DynamicWallpaperAddEvent());
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // 取消
+                        }
+                    });
+
+        }
+
+        @Override
+        public void onVideoPathSelect(String videoPath) {
+            Log.e(TAG, "onVideoPathSelect: " + videoPath);
+            VideoWallpaperService.setWallPaper(MainActivity.this, videoPath);
         }
     };
 }

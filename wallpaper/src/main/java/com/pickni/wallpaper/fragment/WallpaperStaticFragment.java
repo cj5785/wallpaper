@@ -1,7 +1,5 @@
 package com.pickni.wallpaper.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pickni.wallpaper.R;
 import com.pickni.wallpaper.adapter.ColorAdapter;
-import com.pickni.wallpaper.adapter.CustomizeAdapter;
+import com.pickni.wallpaper.adapter.CustomizeImageAdapter;
 import com.pickni.wallpaper.common.ObjectBox;
-import com.pickni.wallpaper.common.WallpaperData;
+import com.pickni.wallpaper.common.WallpaperImageData;
 import com.pickni.wallpaper.event.StaticWallpaperAddEvent;
 import com.pickni.wallpaper.utils.ColorUtils;
 
@@ -31,7 +29,7 @@ import java.util.List;
 
 public class WallpaperStaticFragment extends Fragment {
 
-    private CustomizeAdapter mCustomizeAdapter;
+    private CustomizeImageAdapter mCustomizeImageAdapter;
 
     public interface OnFragmentListener {
         void onColorSelect(Drawable drawable);
@@ -85,9 +83,9 @@ public class WallpaperStaticFragment extends Fragment {
 
         RecyclerView customizeRecyclerView = view.findViewById(R.id.recycler_view_color_customize);
         customizeRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mCustomizeAdapter = new CustomizeAdapter();
-        mCustomizeAdapter.setOnCustomItemClickListener(mOnCustomItemClickListener);
-        customizeRecyclerView.setAdapter(mCustomizeAdapter);
+        mCustomizeImageAdapter = new CustomizeImageAdapter();
+        mCustomizeImageAdapter.setOnCustomItemClickListener(mOnCustomItemClickListener);
+        customizeRecyclerView.setAdapter(mCustomizeImageAdapter);
         queryAllLocalData();
     }
 
@@ -98,8 +96,8 @@ public class WallpaperStaticFragment extends Fragment {
         }
     };
 
-    private final CustomizeAdapter.OnCustomItemClickListener mOnCustomItemClickListener
-            = new CustomizeAdapter.OnCustomItemClickListener() {
+    private final CustomizeImageAdapter.OnCustomItemClickListener mOnCustomItemClickListener
+            = new CustomizeImageAdapter.OnCustomItemClickListener() {
         @Override
         public void onHeaderClicked() {
             if (mOnFragmentListener != null) {
@@ -126,11 +124,11 @@ public class WallpaperStaticFragment extends Fragment {
     }
 
     private void queryAllLocalData() {
-        List<WallpaperData> allData = ObjectBox.get().boxFor(WallpaperData.class).getAll();
+        List<WallpaperImageData> allData = ObjectBox.get().boxFor(WallpaperImageData.class).getAll();
         List<String> imagePathList = new ArrayList<>();
-        for (WallpaperData data : allData) {
+        for (WallpaperImageData data : allData) {
             imagePathList.add(data.path);
         }
-        mCustomizeAdapter.setData(imagePathList);
+        mCustomizeImageAdapter.setData(imagePathList);
     }
 }

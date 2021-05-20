@@ -10,7 +10,7 @@ import io.objectbox.annotation.Id;
  * description :
  */
 @Entity
-public class WallpaperData {
+public class WallpaperVideoData {
     @Id
     public long id;
     public String path;

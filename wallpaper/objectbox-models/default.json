@@ -4,18 +4,37 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:5562708696813665667",
-      "lastPropertyId": "2:1481747008009039782",
-      "name": "WallpaperData",
+      "id": "2:2810623952982052397",
+      "lastPropertyId": "2:101385624210792802",
+      "name": "WallpaperImageData",
       "properties": [
         {
-          "id": "1:2632642206658259988",
+          "id": "1:3691115772473612052",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:1481747008009039782",
+          "id": "2:101385624210792802",
+          "name": "path",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:1006296787670961110",
+      "lastPropertyId": "2:6136899155106484465",
+      "name": "WallpaperVideoData",
+      "properties": [
+        {
+          "id": "1:7455213665268920989",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6136899155106484465",
           "name": "path",
           "type": 9
         }
@@ -23,15 +42,20 @@
       "relations": []
     }
   ],
-  "lastEntityId": "1:5562708696813665667",
+  "lastEntityId": "3:1006296787670961110",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    5562708696813665667
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    2632642206658259988,
+    1481747008009039782
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

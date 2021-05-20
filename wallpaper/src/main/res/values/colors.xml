@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="fragment_bg">#CDCDCD</color>
+    <color name="text_title">#ff666666</color>
+    <color name="text_sub">#ff606060</color>
+    <color name="common_bg">#fff5f8fb</color>
 </resources>

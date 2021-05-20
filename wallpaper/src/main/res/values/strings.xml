@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wallpaper</string>
     <string name="drawer_open">Open</string>
@@ -11,4 +12,8 @@
     <string name="reset">Reset</string>
     <string name="about">About</string>
     <string name="settings">Settings</string>
+    <string name="prompt_version">Version:</string>
+    <string name="dynamic_wallpaper_setting">Dynamic Wallpaper Setting</string>
+    <string name="video_sound">Video Sound</string>
+    <string name="video_volume">Video Volume</string>
 </resources>
