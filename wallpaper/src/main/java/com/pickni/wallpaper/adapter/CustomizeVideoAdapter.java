@@ -70,11 +70,11 @@ public class CustomizeVideoAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class ContentViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView colorSolidImage;
+        private final ImageView coverDynamicImage;
 
         public ContentViewHolder(@NonNull View itemView) {
             super(itemView);
-            colorSolidImage = itemView.findViewById(R.id.iv_color);
+            coverDynamicImage = itemView.findViewById(R.id.iv_dynamic_cover);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position < 0) {
@@ -109,22 +109,22 @@ public class CustomizeVideoAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         RecyclerView.ViewHolder viewHolder;
         if (viewType == ITEM_TYPE_HEADER) {
             View header = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.view_item_static_header, parent, false);
+                    .inflate(R.layout.view_item_dynamic_header, parent, false);
             viewHolder = new HeaderViewHolder(header);
         } else if (viewType == ITEM_TYPE_FOOTER) {
             // ITEM_TYPE_FOOTER
             View footer = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.view_item_static_footer, parent, false);
+                    .inflate(R.layout.view_item_dynamic_footer, parent, false);
             viewHolder = new FooterViewHolder(footer);
         } else {
             // ITEM_TYPE_CONTENT
             View content = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.view_item_static_content, parent, false);
+                    .inflate(R.layout.view_item_dynamic_content, parent, false);
             viewHolder = new ContentViewHolder(content);
         }
 //        int parentWidth = parent.getMeasuredWidth();
 //        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
-//        params.width = (int) (parentWidth / 5.5F);
+//        params.width = (int) (parentWidth / 3.5F);
 //        viewHolder.itemView.setLayoutParams(params);
         return viewHolder;
     }
@@ -134,9 +134,10 @@ public class CustomizeVideoAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int dataPosition = getDataAdapterPosition(position);
         if (holder instanceof ContentViewHolder) {
             ContentViewHolder viewHolder = (ContentViewHolder) holder;
-            Glide.with(viewHolder.colorSolidImage)
+            Glide.with(viewHolder.coverDynamicImage)
                     .load(mVideoPathList.get(dataPosition))
-                    .into(viewHolder.colorSolidImage);
+                    .centerCrop()
+                    .into(viewHolder.coverDynamicImage);
         }
     }
 

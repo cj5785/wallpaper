@@ -28,12 +28,26 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wallpaper"
         tools:targetApi="n">
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".AboutActivity" />
+        <activity
+            android:name=".VideoPreviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".AboutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -63,12 +77,13 @@
         <!-- 视频壁纸服务 -->
         <service
             android:name=".service.VideoWallpaperService"
-            android:label="@string/app_name"
             android:enabled="true"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.wallpaper"
                 android:resource="@xml/live_wall_paper" />
@@ -80,6 +95,7 @@
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.wallpaper"
                 android:resource="@xml/live_wall_paper" />

@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +32,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.pickni.lib_log.HiLog;
 import com.pickni.wallpaper.common.Constants;
 import com.pickni.wallpaper.common.ObjectBox;
 import com.pickni.wallpaper.common.WallpaperImageData;
@@ -43,7 +43,6 @@ import com.pickni.wallpaper.fragment.DefaultFragment;
 import com.pickni.wallpaper.fragment.WallpaperDynamicFragment;
 import com.pickni.wallpaper.fragment.WallpaperStaticFragment;
 import com.pickni.wallpaper.service.ResetWallpaperService;
-import com.pickni.wallpaper.service.VideoWallpaperService;
 import com.pickni.wallpaper.utils.BitmapUtils;
 import com.pickni.wallpaper.utils.WallpaperUtils;
 
@@ -55,7 +54,6 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    private static final String TAG = "MainActivity";
     private static final int SET_WALLPAPER = 0x100;
 
     private Toolbar toolbar;
@@ -164,17 +162,17 @@ public class MainActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.e(TAG, "onTabSelected: " + tab);
+                HiLog.d("onTabSelected: " + tab);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.e(TAG, "onTabUnselected: " + tab);
+                HiLog.d("onTabUnselected: " + tab);
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.e(TAG, "onTabReselected: " + tab);
+                HiLog.d("onTabReselected: " + tab);
             }
         });
     }
@@ -305,7 +303,7 @@ public class MainActivity extends BaseActivity {
                             WallpaperVideoData data = new WallpaperVideoData();
                             data.path = file.getAbsolutePath();
                             ObjectBox.get().boxFor(WallpaperVideoData.class).put(data);
-                            VideoWallpaperService.setWallPaper(MainActivity.this, file.getAbsolutePath());
+                            VideoPreviewActivity.start(MainActivity.this, file.getAbsolutePath());
                             EventBus.getDefault().post(new DynamicWallpaperAddEvent());
                         }
 
@@ -319,8 +317,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onVideoPathSelect(String videoPath) {
-            Log.e(TAG, "onVideoPathSelect: " + videoPath);
-            VideoWallpaperService.setWallPaper(MainActivity.this, videoPath);
+            HiLog.e("onVideoPathSelect: " + videoPath);
+            VideoPreviewActivity.start(MainActivity.this, videoPath);
         }
     };
 }

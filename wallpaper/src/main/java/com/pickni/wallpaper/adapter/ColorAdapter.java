@@ -62,10 +62,10 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_item_static_content, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
-        int parentWidth = parent.getMeasuredWidth();
-        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
-        params.width = (int) (parentWidth / 5.5F);
-        viewHolder.itemView.setLayoutParams(params);
+//        int parentWidth = parent.getMeasuredWidth();
+//        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+//        params.width = (int) (parentWidth / 3.5F);
+//        viewHolder.itemView.setLayoutParams(params);
         return viewHolder;
     }
 

@@ -15,19 +15,21 @@
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="8dp"
             app:title="@string/app_name" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/common_bg" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/holo_green_light"
             app:tabIndicatorHeight="0dp"
@@ -37,12 +39,12 @@
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        app:itemIconSize="24dp"
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/view_head_layout"
+        app:itemIconSize="24dp"
         app:menu="@menu/navigation_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

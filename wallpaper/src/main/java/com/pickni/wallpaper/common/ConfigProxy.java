@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.pickni.lib_log.HiLog;
 import com.pickni.wallpaper.utils.Utils;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class ConfigProxy {
             }
 
             if (!mTargetProcessName.equals(mCurrentProcessNameCache)) {
-                Log.e("ConfigProxy", "Not target process! CurrentProcess: " + mCurrentProcessNameCache + ", Target: " + mTargetProcessName +
+                HiLog.e("ConfigProxy", "Not target process! CurrentProcess: " + mCurrentProcessNameCache + ", Target: " + mTargetProcessName +
                         Log.getStackTraceString(new Exception()));
             }
         }

@@ -1,10 +1,13 @@
 package com.pickni.wallpaper;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.pickni.wallpaper.common.Config;
@@ -21,6 +24,10 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void initView() {
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         SwitchMaterial switchMaterial = findViewById(R.id.switch_video_sound);
         switchMaterial.setChecked(Config.getVideoSoundEnable(this));
         switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

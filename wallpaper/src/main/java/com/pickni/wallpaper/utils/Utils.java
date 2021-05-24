@@ -3,8 +3,8 @@ package com.pickni.wallpaper.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.pickni.lib_log.HiLog;
 import com.pickni.wallpaper.BuildConfig;
 
 import java.io.BufferedReader;
@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Utils {
-    private static final String TAG = "Utils";
 
     public static int getVersionCode() {
         return BuildConfig.VERSION_CODE;
@@ -54,14 +53,14 @@ public class Utils {
             processName = sb.toString();
 
         } catch (IOException e) {
-            Log.e(TAG, "getCurrentProcessName: ", e);
+            HiLog.e("getCurrentProcessName: ", e);
 
         } finally {
             IOUtils.closeQuietly(cmdlineReader);
         }
 
         if (TextUtils.isEmpty(processName)) {
-            Log.w(TAG, "Fail to get process name by /proc/{pid}/cmdline, fallback to list all process mode!");
+            HiLog.w("Fail to get process name by /proc/{pid}/cmdline, fallback to list all process mode!");
             int myPid = android.os.Process.myPid();
             ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             if (activityManager != null) {

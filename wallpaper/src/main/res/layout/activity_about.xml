@@ -9,6 +9,8 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="8dp"
         app:navigationIcon="@drawable/abc_ic_ab_back_material"
         app:title="@string/about" />
 
@@ -19,7 +21,7 @@
         android:layout_below="@id/tool_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_launcher_big" />
 
     <TextView
         android:id="@+id/tv_app_name"

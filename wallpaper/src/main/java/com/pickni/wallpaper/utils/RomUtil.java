@@ -1,10 +1,13 @@
 package com.pickni.wallpaper.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.pickni.lib_log.HiLog;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,17 +22,15 @@ import java.lang.reflect.Method;
  */
 public class RomUtil {
 
-    private static final String TAG = "RomUtil";
-
     /**
      * 判断是否为华为系统
      */
     public static boolean isHuaweiRom() {
         if (!TextUtils.isEmpty(getEmuiVersion()) && !getEmuiVersion().equals("")) {
-            Log.d(TAG, "isHuaweiRom: true");
+            HiLog.d("isHuaweiRom: true");
             return true;
         }
-        Log.d(TAG, "isHuaweiRom: false");
+        HiLog.d("isHuaweiRom: false");
         return false;
     }
 
@@ -38,10 +39,10 @@ public class RomUtil {
      */
     public static boolean isMiuiRom() {
         if (!TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"))) {
-            Log.d(TAG, "isMiuiRom: true");
+            HiLog.d("isMiuiRom: true");
             return true;
         }
-        Log.d(TAG, "isMiuiRom: false");
+        HiLog.d("isMiuiRom: false");
         return false;
     }
 
@@ -54,14 +55,14 @@ public class RomUtil {
             line = input.readLine();
             input.close();
         } catch (IOException ex) {
-            Log.e(TAG, "Unable to read sysprop " + propName, ex);
+            HiLog.e("Unable to read sysprop " + propName, ex);
             return null;
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    Log.e(TAG, "Exception while closing InputStream", e);
+                    HiLog.e("Exception while closing InputStream", e);
                 }
             }
         }
@@ -72,8 +73,7 @@ public class RomUtil {
      * 判断是否为Flyme系统
      */
     public static boolean isFlymeRom(Context context) {
-        Object obj = isInstalledByPkgName(context, "com.meizu.flyme.update") ? Log.d(TAG, "isFlymeRom: true")
-            : Log.d(TAG, "isFlymeRom: false");
+        HiLog.d("isFlymeRom: " + isInstalledByPkgName(context, "com.meizu.flyme.update"));
         return isInstalledByPkgName(context, "com.meizu.flyme.update");
     }
 
@@ -81,8 +81,7 @@ public class RomUtil {
      * 判断是否是Smartisan系统
      */
     public static boolean isSmartisanRom(Context context) {
-        Object obj = isInstalledByPkgName(context, "com.smartisanos.security") ? Log.d(TAG, "isSmartisanRom: true")
-            : Log.d(TAG, "isSmartisanRom: false");
+        HiLog.d("isSmartisanRom: " + isInstalledByPkgName(context, "com.smartisanos.security"));
         return isInstalledByPkgName(context, "com.smartisanos.security");
     }
 
@@ -108,26 +107,26 @@ public class RomUtil {
      */
     private static String getEmuiVersion() {
         String emuiVerion = "";
-        Class<?>[] clsArray = new Class<?>[] { String.class };
-        Object[] objArray = new Object[] { "ro.build.version.emui" };
+        Class<?>[] clsArray = new Class<?>[]{String.class};
+        Object[] objArray = new Object[]{"ro.build.version.emui"};
         try {
-            Class<?> SystemPropertiesClass = Class.forName("android.os.SystemProperties");
+            @SuppressLint("PrivateApi") Class<?> SystemPropertiesClass = Class.forName("android.os.SystemProperties");
             Method get = SystemPropertiesClass.getDeclaredMethod("get", clsArray);
             String version = (String) get.invoke(SystemPropertiesClass, objArray);
-            Log.d(TAG, "get EMUI version is:" + version);
+            HiLog.d("get EMUI version is:" + version);
             if (!TextUtils.isEmpty(version)) {
                 return version;
             }
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, " getEmuiVersion wrong, ClassNotFoundException");
+            HiLog.e(" getEmuiVersion wrong, ClassNotFoundException");
         } catch (LinkageError e) {
-            Log.e(TAG, " getEmuiVersion wrong, LinkageError");
+            HiLog.e(" getEmuiVersion wrong, LinkageError");
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, " getEmuiVersion wrong, NoSuchMethodException");
+            HiLog.e(" getEmuiVersion wrong, NoSuchMethodException");
         } catch (NullPointerException e) {
-            Log.e(TAG, " getEmuiVersion wrong, NullPointerException");
+            HiLog.e(" getEmuiVersion wrong, NullPointerException");
         } catch (Exception e) {
-            Log.e(TAG, " getEmuiVersion wrong");
+            HiLog.e(" getEmuiVersion wrong");
         }
         return emuiVerion;
     }

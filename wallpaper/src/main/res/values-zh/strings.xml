@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">壁纸</string>
+    <string name="drawer_open">打开</string>
+    <string name="drawer_close">关闭</string>
+    <string name="wallpaper_static">静态壁纸</string>
+    <string name="wallpaper_dynamic">动态壁纸</string>
+    <string name="solid_color">纯色</string>
+    <string name="gradient_color">渐变色</string>
+    <string name="customize">自定义</string>
+    <string name="wallpaper_name">壁纸</string>
+    <string name="reset">重置</string>
+    <string name="about">关于</string>
+    <string name="settings">设置</string>
+    <string name="prompt_version">版本:</string>
+    <string name="dynamic_wallpaper_setting">动态壁纸设置</string>
+    <string name="video_sound">视频声音</string>
+    <string name="video_volume">视频音量</string>
+</resources>

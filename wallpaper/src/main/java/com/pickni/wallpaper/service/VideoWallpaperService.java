@@ -10,9 +10,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.service.wallpaper.WallpaperService;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.pickni.lib_log.HiLog;
 import com.pickni.wallpaper.common.Config;
 
 import java.io.IOException;
@@ -25,7 +25,6 @@ import java.io.IOException;
  */
 public class VideoWallpaperService extends WallpaperService {
 
-    private static final String TAG = "VideoWallpaperService";
     public static final String VIDEO_PARAMS_CONTROL_ACTION = "com.pickni.wallpaper.service.VideoLiveWallpaper";
     public static final String KEY_ACTION = "action";
     public static final int ACTION_UPDATE_VIDEO_FILE_PATH = 0x100;
@@ -33,23 +32,24 @@ public class VideoWallpaperService extends WallpaperService {
     public static final int ACTION_VOICE_NORMAL = 0x111;
     private BroadcastReceiver mVideoParamsControlReceiver;
     private MediaPlayer mMediaPlayer;
+    private SurfaceHolder mSurfaceHolder;
 
     public Engine onCreateEngine() {
+        HiLog.d("onCreateEngine: ");
         return new VideoEngine();
     }
 
     class VideoEngine extends Engine {
         @Override
         public void onCreate(SurfaceHolder surfaceHolder) {
-            Log.e(TAG, "onCreate: ");
+            HiLog.e("onCreate: " + mMediaPlayer);
             //Engine对象被创建时回调，这里可以做广播注册等操作
-            super.onCreate(surfaceHolder);
             setVolume(getApplicationContext(), Config.getVideoSoundEnable(getApplicationContext()));
             IntentFilter intentFilter = new IntentFilter(VIDEO_PARAMS_CONTROL_ACTION);
             registerReceiver(mVideoParamsControlReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Log.e(TAG, "onReceive: ");
+                    HiLog.d("onReceive: ");
                     if (mMediaPlayer == null) {
                         return;
                     }
@@ -67,7 +67,7 @@ public class VideoWallpaperService extends WallpaperService {
                             String videoFilePath = Config.getCurrentVideoPath(context);
                             try {
                                 Uri parse = Uri.parse(videoFilePath);
-                                Log.e(TAG, "onReceive: " + parse);
+                                HiLog.e("onReceive: " + parse);
                                 mMediaPlayer.setDataSource(videoFilePath);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -82,68 +82,46 @@ public class VideoWallpaperService extends WallpaperService {
 
         @Override
         public void onVisibilityChanged(boolean visible) {
+            HiLog.d("onVisibilityChanged: " + mMediaPlayer);
             //显示、隐藏时切换，在桌面时为显示，跳转到别的App页面时为隐藏，这里做视频的暂停和恢复播放
-            if(mMediaPlayer!=null) {
+            if (mMediaPlayer != null) {
                 if (visible) {
                     mMediaPlayer.start();
                 } else {
                     mMediaPlayer.pause();
                 }
+            } else {
+                initMediaPlayer();
             }
         }
 
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
             //SurfaceView被创建时回调，我们的视频MediaPlayer对象播放的视频输出在这个surface上
-            super.onSurfaceCreated(holder);
-            Log.e(TAG, "onSurfaceCreated: ");
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(holder.getSurface());
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            try {
-                mMediaPlayer.setDataSource(Config.getCurrentVideoPath(getApplicationContext()));
-                mMediaPlayer.setLooping(true);
-                mMediaPlayer.prepare();
-                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        float volume = Config.getVideoVolumeValue(getApplicationContext());
-                        if (Config.getVideoSoundEnable(getApplicationContext())) {
-                            if (volume - 0 > 0.1F) {
-                                mMediaPlayer.setVolume(volume, volume);
-                                return;
-                            }
-                        }
-                        mMediaPlayer.setVolume(0, 0);
-                    }
-                });
-                mMediaPlayer.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            HiLog.d("onSurfaceCreated: " + mMediaPlayer);
+            mSurfaceHolder = holder;
+            initMediaPlayer();
         }
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            Log.e(TAG, "onSurfaceChanged: ");
-            super.onSurfaceChanged(holder, format, width, height);
+            HiLog.d("onSurfaceChanged: " + mMediaPlayer);
         }
 
         @Override
         public void onSurfaceDestroyed(SurfaceHolder holder) {
             //Surface销毁时回调，这里我们应该销毁MediaPlayer，回收MediaPlayer
-            Log.e(TAG, "onSurfaceDestroyed: ");
-            super.onSurfaceDestroyed(holder);
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+            HiLog.d("onSurfaceDestroyed: " + mMediaPlayer);
+
         }
 
         @Override
         public void onDestroy() {
-            Log.e(TAG, "onDestroy: ");
+            HiLog.d("onDestroy: " + mMediaPlayer);
             //Engine对象被销毁时回调，这里可以注销广播注册等操作
-            unregisterReceiver(mVideoParamsControlReceiver);
-            super.onDestroy();
+            if (mVideoParamsControlReceiver != null) {
+                unregisterReceiver(mVideoParamsControlReceiver);
+            }
         }
     }
 
@@ -192,5 +170,40 @@ public class VideoWallpaperService extends WallpaperService {
             intent.putExtra(KEY_ACTION, ACTION_VOICE_NORMAL);
         }
         context.sendBroadcast(intent);
+    }
+
+    private void initMediaPlayer() {
+        destroyMediaPlayer();
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setSurface(mSurfaceHolder.getSurface());
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mMediaPlayer.setDataSource(Config.getCurrentVideoPath(getApplicationContext()));
+            mMediaPlayer.setLooping(true);
+            mMediaPlayer.prepare();
+            mMediaPlayer.setOnPreparedListener(mp -> {
+                float volume = Config.getVideoVolumeValue(getApplicationContext());
+                if (Config.getVideoSoundEnable(getApplicationContext())) {
+                    if (volume - 0 > 0.1F) {
+                        mMediaPlayer.setVolume(volume, volume);
+                        return;
+                    }
+                }
+                mMediaPlayer.setVolume(0, 0);
+            });
+            mMediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void destroyMediaPlayer() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.pause();
+            mMediaPlayer.reset();
+            mMediaPlayer.setSurface(null);
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 }

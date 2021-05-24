@@ -123,10 +123,10 @@ public class CustomizeImageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .inflate(R.layout.view_item_static_content, parent, false);
             viewHolder = new ContentViewHolder(content);
         }
-        int parentWidth = parent.getMeasuredWidth();
-        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
-        params.width = (int) (parentWidth / 5.5F);
-        viewHolder.itemView.setLayoutParams(params);
+//        int parentWidth = parent.getMeasuredWidth();
+//        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+//        params.width = (int) (parentWidth / 3.5F);
+//        viewHolder.itemView.setLayoutParams(params);
         return viewHolder;
     }
 

@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/solid_color"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_color_solid"
@@ -43,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/gradient_color"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_color_gradient"
@@ -65,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/customize"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_color_customize"

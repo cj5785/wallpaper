@@ -1,2 +1,3 @@
 rootProject.name = "Wallpaper"
 include ':wallpaper'
+include ':lib_log'

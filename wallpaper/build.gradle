@@ -8,15 +8,15 @@ android {
     defaultConfig {
         applicationId "com.pickni.wallpaper"
 
-        versionCode 1
-        versionName "1.0"
+        versionCode 1000
+        versionName "1000"
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         multiDexEnabled true
 
-        resConfigs "en", "zh-rCN"
+        resConfigs "en", "zh"
 
         // for support lib 23.2.0 change, use vector drawable
         vectorDrawables.useSupportLibrary = true
@@ -46,6 +46,8 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation project(path: ':lib_log')
 }
 
 apply plugin: 'io.objectbox'
